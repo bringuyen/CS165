@@ -1,32 +1,27 @@
 import hashlib as hl
 import copy
 import sys
+import time
 salt = "hfT7jp2q"
 magic = "$1$"
 passwrd = "abcdef"
-print hl.md5("hello").hexdigest()
-help = ""
-for i in range(3):
-	help += "a"
-
+base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+cbase64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+encodeSet = [11,4,10,5,3,9,15,2,8,14,1,7,13,0,6,12]
 pw = ""
+
+#initialize password queue
 pwQueue = []
 alpha = []
 for i in range(97,123):
 	pwQueue.append(chr(i))
 	alpha.append(chr(i))
 	
-
+#md5 crypt
 def md5sum(pw):
-	print "password: " + pw
-	print "Alternate sum to hash: " + pw + salt + pw
-	
 	#Alternate Sum 2.
 	newHash = hl.md5(pw+salt+pw)
 	altSum = newHash.digest()
-	print "Alternate sum hash digest: " + altSum
-	print "Alternate sum hash hex digest: " + ":".join("{:02x}".format(ord(c)) for c in altSum)
-	print "length of Alternate Sum: " + str(len(altSum))
 	pwLen = len(pw)
 	#intermediate 3.1-3.3
 	inter = hl.md5(pw+magic+salt)
@@ -42,20 +37,13 @@ def md5sum(pw):
 			
 	#intermediate 5
 	bitString = "{0:b}".format(pwLen)
-	print bitString
-	for i in bitString[::-1]:
-		if i == '0':
-			inter.update('\0')
-		else:
-			inter.update(pw[0])
-			
+	while pwLen:
+		inter.update(chr(0) if pwLen & 1 else pw[0])
+		pwLen = pwLen >> 1	
 	
+	#brute force iteration
 	intermediate = inter.digest()
-	interHex = inter.hexdigest()
-	print "Intermediate 0: " + intermediate
-	print "Intermediate 0 hex: " + ":".join("{:02x}".format(ord(c)) for c in intermediate)
-	#intermediate i cal
-	for i in range(100):
+	for i in range(1000):
 		interI = hl.md5(pw if i & 1 else intermediate)
 		if i % 3:
 			interI.update(salt)
@@ -63,10 +51,23 @@ def md5sum(pw):
 			interI.update(pw)
 		interI.update(intermediate if i & 1 else pw)
 		intermediate = interI.digest()
-		interHex = interI.hexdigest()
-		
-	print "Intermediate 100: " + intermediate
-	print "Intermediate 100 hex: " + ":".join("{:02x}".format(ord(c)) for c in intermediate)
-
+	
+	orange = ""
+	for i in encodeSet:
+		orange += intermediate[i]
+	iBS = "".join("{0:08b}".format(ord(x), 'd') for x in orange)
+	toEncode = [int(iBS[:2],2)]
+	bitLen = len(iBS)
+	
+	n = 6
+	for j in [int(iBS[i:i+n],2) for i in range(2, len(iBS), n)]:
+		toEncode.append(j)
+	finalHash = ""
+	for x in toEncode[::-1]:
+		finalHash += cbase64[x]
+	print "{0}{1}${2}".format(magic,salt,finalHash)
+	
+t0 = time.time()
 md5sum(passwrd)
-		
+t1 = time.time()
+print "TIME: " + str(t1-t0)
