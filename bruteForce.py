@@ -4,8 +4,7 @@ import sys
 import time
 salt = "hfT7jp2q"
 magic = "$1$"
-passwrd = "abcdef"
-teamHash = "/jP2N/zN3rcH99EPXC51."
+teamHash = "WWkD4idIBJxT6tLe/mPUG1"
 base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 cbase64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 encodeSet = [11,4,10,5,3,9,15,2,8,14,1,7,13,0,6,12]
@@ -14,7 +13,7 @@ pw = ""
 #initialize password queue
 pwQueue = []
 alpha = []
-for i in range(97,123):
+for i in range(97,123)::
 	pwQueue.append(chr(i))
 	alpha.append(chr(i))
 	
@@ -68,13 +67,13 @@ def md5sum(pw):
 		finalHash += cbase64[x]
 	print "{0}{1}${2}".format(magic,salt,finalHash)
 	return finalHash
-md5sum(passwrd)
 
 count = 0
 t0 = time.time()
 while len(pwQueue[len(pwQueue)-1]) < 7:
 	newPw = pwQueue.pop(0)
 	count += 0
+	print "PASSWORD: " + newPw
 	if md5sum(newPw) == teamHash:
 		break
 	for i in alpha:
