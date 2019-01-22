@@ -88,15 +88,16 @@ for a in range(104,107):
 				pw2 = pw1 + chr(d)
 				for e in range(97,123):
 					pw3 = pw2 + chr(e)
-					if md5sum(pw0) == teamHash:
-						print "PASSWORD: " + pw3
+					if md5sum(pw3) == teamHash:
+				                print "PASSWORD: " + pw3
 						break
 					
 					for f in range(97,123):
 						pw4 = pw3 + chr(f)
-						if md5sum(pw1) == teamHash:
+						if md5sum(pw4) == teamHash:
 							print "PASSWORD: " + pw4
 							break
+                        print pw4
 t1 = time.time()
-print "Password throughput: " + str(count/(t1-t0)) + " passwords/sec"
+print "Password throughput: " + str((t1-t0)) + " passwords/sec"
 		
