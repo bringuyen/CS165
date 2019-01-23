@@ -77,9 +77,12 @@ pw1 = ""
 pw2 = ""
 pw3 = ""
 pw4 = ""
-for a in range(101,104):
+for a in range(102,104):
 	pw = chr(a)
 	for b in range(97,123):
+            if pw[0] == 'f' and b < 122:
+                continue
+            else:
 		pw0 = pw + chr(b)
 		for c in range(97,123):
 			pw1 = pw0 + chr(c)

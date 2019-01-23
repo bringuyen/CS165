@@ -78,27 +78,31 @@ pw1 = ""
 pw2 = ""
 pw3 = ""
 pw4 = ""
-for a in range(107,110):
-	pw = chr(a)
-	for b in range(97,123):
-		pw0 = pw + chr(b)
-		for c in range(97,123):
-			pw1 = pw0 + chr(c)
-			for d in range(97,123):
-				pw2 = pw1 + chr(d)
-				for e in range(97,123):
-					pw3 = pw2 + chr(e)
+for a in range(108,110):
+        if a > 107:
+            pw = chr(a)
+            for b in range(97,123):
+                if pw[0] == 'l' and b < 121:
+                    continue
+                else:
+                    pw0 = pw + chr(b)
+                    for c in range(97,123):
+                            pw1 = pw0 + chr(c)
+                            for d in range(97,123):
+                                    pw2 = pw1 + chr(d)
+                                    for e in range(97,123):
+                                            pw3 = pw2 + chr(e)
 
-                                        if md5sum(pw3) == teamHash:
-					        print "PASSWORD: " + pw3
-						break
-					
-					for f in range(97,123):
-						pw4 = pw3 + chr(f)
-						if md5sum(pw4) == teamHash:
-							print "PASSWORD: " + pw4
-							break
-                        print pw4
+                                            if md5sum(pw3) == teamHash:
+                                                    print "PASSWORD: " + pw3
+                                                    break
+                                            
+                                            for f in range(97,123):
+                                                    pw4 = pw3 + chr(f)
+                                                    if md5sum(pw4) == teamHash:
+                                                            print "PASSWORD: " + pw4
+                                                            break
+                            print pw4
 t1 = time.time()
 print "Password throughput: " + str((t1-t0)) + " passwords/sec"
 		
