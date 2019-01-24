@@ -70,21 +70,16 @@ def md5sum(pw):
 	return finalHash
 
 count = 0
-check = 0
-t0 = time.time()
-pw = ""
-pw0 = ""
-pw1 = ""
-pw2 = ""
-pw3 = ""
-pw4 = ""
-for a in range(108,110):
-        if a > 107:
+def pwgen():
+    pw = ""
+    pw0 = ""
+    pw1 = ""
+    pw2 = ""
+    pw3 = ""
+    pw4 = ""
+    for a in range(107,110):
             pw = chr(a)
             for b in range(97,123):
-                if pw[0] == 'l' and b < 121:
-                    continue
-                else:
                     pw0 = pw + chr(b)
                     for c in range(97,123):
                             pw1 = pw0 + chr(c)
@@ -92,17 +87,17 @@ for a in range(108,110):
                                     pw2 = pw1 + chr(d)
                                     for e in range(97,123):
                                             pw3 = pw2 + chr(e)
-
                                             if md5sum(pw3) == teamHash:
-                                                    print "PASSWORD: " + pw3
-                                                    break
-                                            
+                                                print "PASSWORD: " + pw3
+                                                return pw3
                                             for f in range(97,123):
                                                     pw4 = pw3 + chr(f)
                                                     if md5sum(pw4) == teamHash:
                                                             print "PASSWORD: " + pw4
-                                                            break
+                                                            return pw4
                             print pw4
+    return "None found"
+t0 = time.time()
+print "PASSWORD: " + pwgen()
 t1 = time.time()
 print "Password throughput: " + str((t1-t0)) + " passwords/sec"
-		
